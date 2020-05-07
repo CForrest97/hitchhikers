@@ -1,0 +1,12 @@
+body {
+  background-color: red !important;
+  color: white;
+}
+
+agree {
+  color: greenyellow;
+}
+
+disagree {
+  color: orange;
+}
