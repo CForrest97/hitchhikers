@@ -26,17 +26,32 @@ const analyseTweet = (tweet, callback) => {
   http.onreadystatechange = () => callback(http.response);
 };
 
-const hasBeenAnalysed = (tweet) => tweet.children.length > 1;
+const hasBeenAnalysed = (tweet) => tweet.getAttribute('analysed') === 'true';
 
 const addAnalysisToTweet = (tweet, score) => {
-  const classification = score > 80 ? 'agree' : 'disagree';
-  const response = `Most sources ${classification}, Click Here to find out more`;
-
-  const node = document.createElement(classification);
-  node.appendChild(document.createTextNode(`${response} (${score})`));
-
   if ((!hasBeenAnalysed(tweet))) {
-    tweet.appendChild(node);
+    const classification = score > 80 ? 'agree' : 'disagree';
+
+    // Only one retweet row per tweet
+    const [retweetrow] = tweet.querySelectorAll('[role="group"]');
+
+    // the element above the retweet row is usually extra content (i.e. video)
+    const extracontent = retweetrow.previousElementSibling;
+
+    // the element above the extra content is usually the content
+    const tweetContent = extracontent.previousElementSibling;
+    tweetContent.classList += ` ${classification}-block`;
+
+    // Only add the text if the element that should have text has a height (is not just a video)
+    if (tweetContent.offsetHeight > 0) {
+      const text = document.createElement('P');
+      text.className = `${classification}-text`;
+      text.innerHTML = `Most sources ${classification}, Click <span class="click-here">Here</span> to find out more`;
+      tweetContent.insertAdjacentElement('afterend', text);
+    }
+
+    // Finally, show that the tweet has been analysed
+    tweet.setAttribute('analysed', true);
   }
 };
 
