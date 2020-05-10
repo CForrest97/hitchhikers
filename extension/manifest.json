@@ -10,6 +10,16 @@
       "css": ["styles.css"],
       "js": ["twitter.js", "hitchhikers.js"],
       "matches": ["https://twitter.com/*"]
+    },
+    {
+      "css": ["styles.css"],
+      "js": ["bbc.js", "hitchhikers.js"],
+      "matches": ["https://www.bbc.co.uk/news/*"]
+    },
+    {
+      "css": ["styles.css"],
+      "js": ["facebook.js", "hitchhikers.js"],
+      "matches": ["https://www.facebook.com/*"]
     }
   ],
   "permissions": ["https://*/"]

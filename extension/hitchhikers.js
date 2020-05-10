@@ -32,3 +32,15 @@ const addAnalysisToElement = (element, score) => {
     setAnalysed(element);
   }
 };
+
+const analyseClaims = (claims) => {
+  for (let index = 0; index < claims.length; index += 1) {
+    const claim = claims[index];
+    if (!hasBeenAnalysed(claim)) {
+      const { textContent } = claim;
+      analyseText(textContent, ({ score }) => {
+        addAnalysisToElement(claim, score);
+      });
+    }
+  }
+};
