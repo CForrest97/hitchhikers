@@ -73,10 +73,21 @@ const createModal = () => {
   footer.className = 'modal-footer';
   modal.appendChild(footer);
 
+  // view info button
+  const hitchhikerInfo = document.createElement('A');
+  hitchhikerInfo.href = '';
+  hitchhikerInfo.target = '_blank';
+  hitchhikerInfo.textContent = 'insert info text here';
+  const hitchhikerInfoContainer = document.createElement('DIV');
+  hitchhikerInfoContainer.appendChild(hitchhikerInfo);
+  footer.appendChild(hitchhikerInfoContainer);
+
   // TODO improve by adding a href element and link to Google search
   const searchClaimOnGoogle = document.createElement('BUTTON');
   searchClaimOnGoogle.textContent = 'Search this claim on Google';
-  footer.appendChild(searchClaimOnGoogle);
+  const searchClaimOnGoogleContainer = document.createElement('DIV');
+  searchClaimOnGoogleContainer.appendChild(searchClaimOnGoogle);
+  footer.appendChild(searchClaimOnGoogleContainer);
 
   // Close button
   const closeButton = document.createElement('SPAN');
