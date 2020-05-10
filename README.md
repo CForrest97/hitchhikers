@@ -26,6 +26,7 @@ npm start
 
 ```
 Visit: chrome://extensions/
+Enable: Developer mode
 Press: Load Unpacked
 Click: extension folder
 ```
