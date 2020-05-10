@@ -1,0 +1,43 @@
+.Instruction {
+    margin: 10px;
+    width: 1200px;
+    height: 600px;
+    /* display: inline-block; */
+    min-height: 2.5rem;
+    color: black;
+    float: left;
+    margin: 90px;
+}
+
+.Content {
+    /* margin: 10px; */
+    width: calc(100% - 90px);
+    font-size: 1.5em;
+    font-weight: bold;
+    color: rgb(4, 4, 58);
+    float: left;
+    vertical-align: middle;
+    margin: auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.Top {
+
+    display: flex;
+    width: 100%;
+    font-size: 0.5em;
+    height: 70px;
+    margin-top: 0px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.Body {
+    width: 100%;
+    font-size: 0.5em;
+    height: calc(100%-50px);
+}
+
+.Body img {
+    width: 100%;
+}
