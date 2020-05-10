@@ -8,7 +8,7 @@
   "content_scripts": [
     {
       "css": ["styles.css"],
-      "js": ["content.js"],
+      "js": ["twitter.js", "hitchhikers.js"],
       "matches": ["https://twitter.com/*"]
     }
   ],
