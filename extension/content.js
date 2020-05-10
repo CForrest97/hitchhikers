@@ -1,22 +1,42 @@
 const getTweets = () => document.getElementsByTagName('article');
 
-const getTweetContent = (tweet) => {
-  const x = tweet
-    .children[0]
-    .children[1]
-    .children[1]
-    .children[1]
-    .children;
+const getTweetContentElement = (tweet) => {
+  // Get tweet content on single tweet status page
+  const [authorDiv] = tweet.querySelectorAll('[data-testid="tweet"]');
+  if (authorDiv) {
+    const tweetContainer = authorDiv.nextElementSibling;
+    if (tweetContainer) {
+      const tweetContent = tweetContainer.firstChild;
+      return tweetContent;
+    }
+  }
 
-  const y = x[0].children.length ? x[0] : x[1];
-  return y
-    .children[0]
-    .children[0]
-    .textContent;
+  // Get tweet content for page with lots of tweets
+  // Only one retweet row per tweet
+  const [retweetrow] = tweet.querySelectorAll('[role="group"]');
+  if (retweetrow) {
+    // the element above the retweet row is usually extra content (i.e. video)
+    const extracontent = retweetrow.previousElementSibling;
+    // the element above the extra content is usually the content
+    if (extracontent) {
+      const tweetContent = extracontent.previousElementSibling;
+      return tweetContent;
+    }
+  }
+
+  return null;
+};
+
+const getTweetText = (tweet) => {
+  const tweetContent = getTweetContentElement(tweet);
+  if (tweetContent) {
+    return tweetContent.textContent;
+  }
+  return null;
 };
 
 const analyseTweet = (tweet, callback) => {
-  const content = getTweetContent(tweet);
+  const content = getTweetText(tweet);
   const http = new XMLHttpRequest();
   const url = 'http://localhost:4242/analyse';
 
@@ -26,17 +46,24 @@ const analyseTweet = (tweet, callback) => {
   http.onreadystatechange = () => callback(http.response);
 };
 
-const hasBeenAnalysed = (tweet) => tweet.children.length > 1;
+const hasBeenAnalysed = (tweet) => tweet.getAttribute('analysed') === 'true';
 
 const addAnalysisToTweet = (tweet, score) => {
-  const classification = score > 80 ? 'agree' : 'disagree';
-  const response = `Most sources ${classification}, Click Here to find out more`;
-
-  const node = document.createElement(classification);
-  node.appendChild(document.createTextNode(`${response} (${score})`));
-
   if ((!hasBeenAnalysed(tweet))) {
-    tweet.appendChild(node);
+    const tweetContent = getTweetContentElement(tweet);
+    const classification = score > 80 ? 'agree' : 'disagree';
+
+    // Only add the text if the element that should have text has a height (is not just a video)
+    if (tweetContent.offsetHeight > 0) {
+      const text = document.createElement('P');
+      text.className = `${classification}-text`;
+      text.innerHTML = `Most sources ${classification}, Click <span class="click-here">Here</span> to find out more`;
+      tweetContent.insertAdjacentElement('afterend', text);
+      tweetContent.classList += ` ${classification}-block`;
+    }
+
+    // Finally, show that the tweet has been analysed
+    tweet.setAttribute('analysed', true);
   }
 };
 
