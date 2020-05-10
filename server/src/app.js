@@ -9,8 +9,15 @@ module.exports = () => {
 
   app.get('/', (req, res) => res.send('hello world'));
   app.post('/analyse', (req, res) => {
-    console.log(req.body);
-    res.send({ score: Math.round(Math.random() * 100) });
+    const { origin } = req.body;
+
+    if (origin.includes('bbc')) {
+      res.send({ score: 100 });
+    } else if (origin.includes('facebook')) {
+      res.send({ score: 0 });
+    } else if (origin.includes('twitter')) {
+      res.send({ score: 78 });
+    }
   });
   return app;
 };
