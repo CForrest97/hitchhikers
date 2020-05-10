@@ -22,16 +22,14 @@ const createModalContentSection = (classification) => {
   const title = document.createElement('H3');
   title.textContent = `Sources that ${classification}`;
 
-  // TODO make this dynamic and use a parameter
   const link = document.createElement('A');
-  link.href = '';
+  link.className = 'modal-content-title';
   link.target = '_blank';
-  link.textContent = 'Critics said the flu kills more than coronavirus. Why that\'s not a fair comparison-- and now, it\'s not even true';
 
   const author = document.createElement('P');
-  author.textContent = 'CNN';
+  author.className = 'modal-content-author';
 
-  // TODO make this do something
+  // TODO make a link or button and do something to show more
   const showMore = document.createElement('P');
   showMore.className = 'modal-show-more';
   showMore.textContent = 'Show more';
@@ -43,11 +41,12 @@ const createModalContentSection = (classification) => {
   return container;
 };
 
-const createModal = (score, classification) => {
+const createModal = () => {
   const container = document.createElement('DIV');
   container.className = 'modal-container';
 
   const modal = document.createElement('DIV');
+  modal.id = 'hitchhiker-modal';
   modal.className = 'modal';
   container.appendChild(modal);
 
@@ -56,19 +55,15 @@ const createModal = (score, classification) => {
   modal.appendChild(header);
 
   const title = document.createElement('H2');
-  const claim = 'Coronavirus is less deadly than the flu'; // TODO remove this and use real claim
-  title.textContent = `Claim: ${claim}`;
   header.appendChild(title);
 
   const subtitle = document.createElement('P');
-  subtitle.textContent = `${score}% of sources ${classification}`;
   header.appendChild(subtitle);
 
   const content = document.createElement('DIV');
   content.className = 'modal-content';
   modal.appendChild(content);
 
-  // TODO improve to pass through real source and show more link
   const disagreeSourcesSection = createModalContentSection('disagree');
   const agreeSourcesSection = createModalContentSection('agree');
   content.appendChild(disagreeSourcesSection);
@@ -92,14 +87,48 @@ const createModal = (score, classification) => {
   }, false);
   modal.appendChild(closeButton);
 
+  // Add to body
+  const [body] = document.getElementsByTagName('BODY');
+  body.appendChild(container);
+
   return container;
+};
+
+const updateModalAndShow = (score, classification, claim) => {
+  const modal = document.getElementById('hitchhiker-modal');
+
+  // Update header
+  const [header] = modal.getElementsByClassName('modal-header');
+  const [headerTitle] = header.getElementsByTagName('H2');
+  headerTitle.textContent = `Claim: ${claim}`;
+  const [headerSubTitle] = header.getElementsByTagName('P');
+  headerSubTitle.textContent = `${score}% of sources ${classification}`;
+
+  // Update sources that disagree
+  const [disagreeContent] = modal.getElementsByClassName('modal-content-disagree');
+  const [disagreeTitle] = disagreeContent.getElementsByClassName('modal-content-title');
+  disagreeTitle.textContent = 'Critics said the flu kills more than coronavirus. Why that\'s not a fair comparison-- and now, it\'s not even true';
+  disagreeTitle.href = '';
+  const [disagreeAuthor] = disagreeContent.getElementsByClassName('modal-content-author');
+  disagreeAuthor.textContent = 'CNN';
+
+  // Update sources that agree
+  const [agreeContent] = modal.getElementsByClassName('modal-content-agree');
+  const [agreeTitle] = agreeContent.getElementsByClassName('modal-content-title');
+  agreeTitle.textContent = 'Get a grippe, America. The flu is a much bigger threat than coronavirus, for now.';
+  agreeTitle.href = '';
+  const [agreeAuthor] = agreeContent.getElementsByClassName('modal-content-author');
+  agreeAuthor.textContent = 'Washington Post';
+
+  // TODO update footer button with google link
+
+  const container = modal.parentNode;
+  container.style.display = 'block';
 };
 
 const addAnalysisToElement = (element, score) => {
   if ((!hasBeenAnalysed(element))) {
     const classification = score > 80 ? 'agree' : 'disagree';
-
-    const modal = createModal(score, classification);
 
     // Only add the text if the element that should have text has a height (is not just a video)
     if (element.offsetHeight > 0) {
@@ -107,8 +136,8 @@ const addAnalysisToElement = (element, score) => {
       clickHere.className = 'click-here';
       clickHere.textContent = 'Here';
       clickHere.addEventListener('click', (e) => {
-        e.stopPropagation();
-        modal.style.display = 'block';
+        e.stopPropagation(); // Prevents sites like Twitter from opening the tweet
+        updateModalAndShow(score, classification, 'Coronavirus is less deadly than the flu');
       }, false);
 
       const text = document.createElement('P');
@@ -120,8 +149,10 @@ const addAnalysisToElement = (element, score) => {
       element.insertAdjacentElement('afterend', text);
       element.classList.add(`${classification}-block`);
 
-      const [body] = document.getElementsByTagName('BODY');
-      body.appendChild(modal);
+      const modalExists = document.getElementById('hitchhiker-modal');
+      if (!modalExists) {
+        createModal();
+      }
     }
 
     // Finally, show that the element has been analysed
