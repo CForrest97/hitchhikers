@@ -1,4 +1,9 @@
-const getTweets = () => document.getElementsByTagName('article');
+// const getTweets = () => document.getElementsByTagName('article');
+// Temporarily only scan the first tweet
+const getTweets = () => {
+  const [firstTweet] = document.getElementsByTagName('article');
+  return [firstTweet];
+};
 
 const getTweetContentElement = (tweet) => {
   // Get tweet content on single tweet status page
