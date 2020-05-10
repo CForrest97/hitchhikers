@@ -145,7 +145,7 @@ const addAnalysisToElement = (element, score) => {
     if (element.offsetHeight > 0) {
       const clickHere = document.createElement('SPAN');
       clickHere.className = 'click-here';
-      clickHere.textContent = 'Here';
+      clickHere.textContent = 'here';
       clickHere.addEventListener('click', (e) => {
         e.stopPropagation(); // Prevents sites like Twitter from opening the tweet
         updateModalAndShow(score, classification, 'Coronavirus is less deadly than the flu');
