@@ -1,9 +1,10 @@
 .agree-text,
-.disagree-text {
+.disagree-text,
+.modal {
   margin: 5px 0 0;
   /* Improve to get the font from the current page */
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Ubuntu, 'Helvetica Neue', sans-serif;
+    Ubuntu, 'Helvetica Neue', sans-serif !important;
 }
 
 .agree-text {
@@ -17,6 +18,7 @@
 .click-here {
   font-weight: 700;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .agree-block,
@@ -31,3 +33,157 @@
 .disagree-block {
   border-left: 5px solid orange !important;
 }
+
+.modal-container {
+  position: fixed;
+  z-index: 10000000;
+  display: none;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0,0,0, 0.7);
+}
+
+.modal {
+  width: 520px;
+  margin: 100px auto 0;
+  border: 1px solid black;
+  background-color: white;
+  position: relative;
+  border: 0;
+  border-radius: 2px;
+}
+
+.modal-header {
+      padding: 16px 24px;
+      color: rgba(0, 0, 0, 0.65);
+      background: #fff;
+      border-bottom: 1px solid #f0f0f0;
+      border-radius: 2px 2px 0 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  display: inline-block;
+  width: 95%;
+  font-weight: 500;
+  font-size: 22px;
+}
+
+.modal-header p {
+  margin: 0;
+  font-size: 20px;
+  color: orange;
+  font-weight: 500;
+  padding-top: 10px;
+}
+
+.modal-content {
+  padding: 24px;
+  font-size: 14px;
+  line-height: 1.5715;
+  word-wrap: break-word;
+  font-weight: 300;
+}
+
+.modal-content-agree,
+.modal-content-disagree {
+  margin-bottom: 10px;
+}
+
+.modal-content-agree {
+  border-top: 1px solid #ddd;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.modal-content h3 {
+  font-size: 20px;
+  padding-bottom: 10px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: 300;
+}
+
+.modal-content p {
+  font-size: 12px;
+  margin: 0;
+  padding-bottom: 5px;
+}
+
+.modal-content a {
+  font-size: 14px;
+  margin: 0;
+  color: blue;
+  font-weight: 500;
+  padding-top: 5px;
+  text-decoration: none;
+}
+
+.modal-content .modal-show-more {
+  padding: 5px 0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.modal-footer {
+  padding: 10px 16px;
+  text-align: right;
+  background: transparent;
+  border-top: 1px solid #f0f0f0;
+  border-radius: 0 0 2px 2px;
+}
+
+.modal-footer button {
+  line-height: 1.5715;
+  position: relative;
+  display: inline-block;
+  font-weight: 400;
+  white-space: nowrap;
+  text-align: center;
+  background-image: none;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  height: 32px;
+  padding: 4px 15px;
+  font-size: 14px;
+  border-radius: 2px;
+  color: #fff;
+  background-color: #1890ff;
+  border-color: #1890ff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+}
+
+.modal-close-button {
+  display: block;
+  width: 56px;
+  height: 56px;
+  font-size: 16px;
+  font-style: normal;
+  line-height: 56px;
+  text-align: center;
+  text-transform: none;
+  text-rendering: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: darkgrey;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+
