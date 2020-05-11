@@ -1,10 +1,10 @@
 .HeaderWrapper {
   width: 100%;
-  background-color: white;
+  background-color: rgb(101, 163, 214);
   position: fixed;
   top: 0;
-  height: 200px;
-  color: black;
+  height: 100px;
+  color: white;
   /* justify-content: left; */
   text-align: center;
   display: flex;
