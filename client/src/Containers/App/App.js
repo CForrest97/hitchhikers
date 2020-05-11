@@ -21,18 +21,18 @@ const App = () => (
         <Instruction stepCount={2} headline={<h1>Extract the tweet's central claim</h1>} content={
           <div>
             <p>Using IBM Watson, we analysed the tweet to identify its main argument: </p>
-            <div className="Quote">"People are immune to Coronavirus if they've already have it"</div>
+            <div className="Quote">"People are immune to Coronavirus if they've already had it"</div>
           </div>} />
         <Instruction stepCount={3} headline={<h1>Find related articles</h1>} content={
           <div>
-            <p>We searched on Google for related articles. We found over 112 million results!</p>
+            <p>We searched on Google for related articles. We found over 324 million results!</p>
             <div className="ImgContainer">
               <img src="search.png"/>
             </div>
           </div>} />
         <Instruction stepCount={4} headline={<h1>Refine related articles</h1>} content={
           <div className="List">
-            <p>Of these 112 million results, we select the most trustworthy articles, using this criteria:</p>
+            <p>Of these 324 million results, we select the most trustworthy articles, using this criteria:</p>
             <ul>
               <li>Relevance</li>
               <li>Recentness</li>
