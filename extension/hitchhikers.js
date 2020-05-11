@@ -148,7 +148,7 @@ const addAnalysisToElement = (element, score) => {
       clickHere.textContent = 'here';
       clickHere.addEventListener('click', (e) => {
         e.stopPropagation(); // Prevents sites like Twitter from opening the tweet
-        updateModalAndShow(score, classification, 'You cannot contract coronavirus twice');
+        updateModalAndShow(score, classification, 'People are immune to coronavirus if they\'ve already have it');
       }, false);
 
       const text = document.createElement('P');
