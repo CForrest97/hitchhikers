@@ -126,7 +126,7 @@ const updateModalAndShow = (score, classification, claim) => {
   // Update sources that agree
   const [agreeContent] = modal.getElementsByClassName('modal-content-agree');
   const [agreeTitle] = agreeContent.getElementsByClassName('modal-content-title');
-  agreeTitle.textContent = 'Coronavirus: Scientists conclude people cannot be infected twice';
+  agreeTitle.textContent = 'People are immune to Coronavirus if they\'ve already have it';
   agreeTitle.href = '';
   const [agreeAuthor] = agreeContent.getElementsByClassName('modal-content-author');
   agreeAuthor.textContent = 'Sky News';
