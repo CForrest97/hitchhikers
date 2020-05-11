@@ -4,7 +4,7 @@ import { HeaderWrapper } from './Header.module.css';
 
 const Header = () => (
   <div className = {HeaderWrapper}>
-    Hitchhiker's Guide To The Internet
+    The Hitchhiker's Guide To The Internet
   </div>
 );
 

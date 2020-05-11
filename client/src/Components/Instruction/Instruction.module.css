@@ -1,5 +1,5 @@
 .InstructionWrapper {
-  width: 700px;
+  width: 100%;
   height: 300px;
   background-color: white;
   display: flex;
@@ -27,8 +27,5 @@
   height: 100%;
   text-align: left;
   margin: auto;
-}
-
-.ContentWrapper img {
-  width: 100%;
+  font-size: 1.2em;
 }
