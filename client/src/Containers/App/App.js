@@ -27,13 +27,13 @@ const App = () => (
             <p>For your claim, we found over 22.9 million related articles!</p>
             <img src="search.png"/>
           </div>} />
-        <Instruction stepCount={4} headline={<h1>Refine list of related articless</h1>} content={
+        <Instruction stepCount={4} headline={<h1>Refine related articles</h1>} content={
           <div className="List">
-            <p>From these 22.9 million, we select 5-50 articles based on the following criteria</p>
+            <p>From these 22.9 million articles, we select the best articles based on the following criteria</p>
             <ul >
               <li>Relevance</li>
-              <li>Recent</li>
-              <li>Reliable</li>
+              <li>Recentness</li>
+              <li>Reliabilty</li>
               <li>Keywords</li>
               <li>And much more!</li>
             </ul>
@@ -42,6 +42,7 @@ const App = () => (
         <Instruction stepCount={5} headline={<h1>Analyse each article</h1>} content={
           <div>
             <p>We analyse each article with Watson to determine if the article is for or against the claim in the tweet</p>
+            <img src="IBMwatson.png"/>
           </div>} />
         <Instruction stepCount={6} headline={<h1>Generate score</h1>} content={
         <div>
