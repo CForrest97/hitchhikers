@@ -75,9 +75,9 @@ const createModal = () => {
 
   // view info button
   const hitchhikerInfo = document.createElement('A');
-  hitchhikerInfo.href = '';
+  hitchhikerInfo.href = 'http://localhost:4288/';
   hitchhikerInfo.target = '_blank';
-  hitchhikerInfo.textContent = 'insert info text here';
+  hitchhikerInfo.textContent = 'How does this work?';
   const hitchhikerInfoContainer = document.createElement('DIV');
   hitchhikerInfoContainer.appendChild(hitchhikerInfo);
   footer.appendChild(hitchhikerInfoContainer);
@@ -118,18 +118,18 @@ const updateModalAndShow = (score, classification, claim) => {
   // Update sources that disagree
   const [disagreeContent] = modal.getElementsByClassName('modal-content-disagree');
   const [disagreeTitle] = disagreeContent.getElementsByClassName('modal-content-title');
-  disagreeTitle.textContent = 'Critics said the flu kills more than coronavirus. Why that\'s not a fair comparison-- and now, it\'s not even true';
+  disagreeTitle.textContent = '"No evidence" you can\'t get Covid-19 twice: WHO';
   disagreeTitle.href = '';
   const [disagreeAuthor] = disagreeContent.getElementsByClassName('modal-content-author');
-  disagreeAuthor.textContent = 'CNN';
+  disagreeAuthor.textContent = 'The Local';
 
   // Update sources that agree
   const [agreeContent] = modal.getElementsByClassName('modal-content-agree');
   const [agreeTitle] = agreeContent.getElementsByClassName('modal-content-title');
-  agreeTitle.textContent = 'Get a grippe, America. The flu is a much bigger threat than coronavirus, for now.';
+  agreeTitle.textContent = 'Coronavirus: Scientists conclude people cannot be infected twice';
   agreeTitle.href = '';
   const [agreeAuthor] = agreeContent.getElementsByClassName('modal-content-author');
-  agreeAuthor.textContent = 'Washington Post';
+  agreeAuthor.textContent = 'Sky News';
 
   // TODO update footer button with google link
 
@@ -145,10 +145,10 @@ const addAnalysisToElement = (element, score) => {
     if (element.offsetHeight > 0) {
       const clickHere = document.createElement('SPAN');
       clickHere.className = 'click-here';
-      clickHere.textContent = 'Here';
+      clickHere.textContent = 'here';
       clickHere.addEventListener('click', (e) => {
         e.stopPropagation(); // Prevents sites like Twitter from opening the tweet
-        updateModalAndShow(score, classification, 'Coronavirus is less deadly than the flu');
+        updateModalAndShow(score, classification, 'You cannot contract coronavirus twice');
       }, false);
 
       const text = document.createElement('P');

@@ -1,0 +1,34 @@
+.InstructionWrapper {
+  width: 100%;
+  height: 500px;
+  background-color: white;
+  display: flex;
+}
+.StepWrapper {
+  width: 100px;
+  height: 100%;
+  text-align: center;
+}
+
+.StepWrapper h1 {
+  font-size: 1em;
+}
+
+.HeaderWrapper {
+  border-bottom: 5px solid rgb(101, 163, 214);
+}
+
+.HeaderWrapper h1 {
+  font-size: 1em;
+}
+
+.ContentWrapper {
+  width: calc(100% - 200px);
+  height: 100%;
+  text-align: left;
+  margin: auto;
+}
+
+.ContentWrapper img {
+  width: 100%;
+}
