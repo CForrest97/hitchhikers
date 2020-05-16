@@ -1,4 +1,3 @@
-require('dotenv').config();
 const { search } = require('../../src/services/bing.service');
 
 describe('bing service', () => {
