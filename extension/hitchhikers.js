@@ -181,8 +181,8 @@ const analyseClaims = (claims) => {
     if (!hasAnalysisStarted(claim)) {
       setAnalysisStarted(claim);
       const { textContent } = claim;
-      analyseText(textContent, ({ score }) => {
-        addAnalysisToElement(claim, score);
+      analyseText(textContent, ({ pctAgree }) => {
+        addAnalysisToElement(claim, pctAgree);
       });
     }
   }

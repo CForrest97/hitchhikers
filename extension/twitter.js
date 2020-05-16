@@ -47,8 +47,8 @@ setInterval(() => {
     const element = getTweetContentElement(tweet);
     if (!hasBeenAnalysed(element)) {
       const text = getTweetText(tweet);
-      analyseText(text, ({ score }) => {
-        addAnalysisToElement(element, score);
+      analyseText(text, ({ pctAgree }) => {
+        addAnalysisToElement(element, pctAgree);
       });
     }
   }
