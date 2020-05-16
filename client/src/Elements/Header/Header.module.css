@@ -1,0 +1,16 @@
+.HeaderWrapper {
+  width: 100%;
+  background-color: rgb(101, 163, 214);
+  position: fixed;
+  top: 0;
+  height: 100px;
+  color: white;
+  /* justify-content: left; */
+  text-align: center;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  /* justify-content: left; */
+  padding-left: 50px;
+  font-size: 1.5em;
+}
