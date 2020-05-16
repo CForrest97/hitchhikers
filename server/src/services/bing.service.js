@@ -16,6 +16,17 @@ const search = (query) => request({
   json: true,
 });
 
+const searchForUrls = async (query) => {
+  // console.log('[searchForUrls] query');
+  // console.log(query);
+  const results = await search(query);
+  // console.log('results');
+  // console.log(results);
+  const urls = results.value.map(({ url }) => url);
+  return urls;
+};
+
 module.exports = {
   search,
+  searchForUrls,
 };

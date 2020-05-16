@@ -15,6 +15,10 @@ const hasBeenAnalysed = (element) => element.parentNode.getAttribute('analysed')
 
 const setAnalysed = (element) => element.parentNode.setAttribute('analysed', true);
 
+const hasAnalysisStarted = (element) => element.parentNode.getAttribute('analysisStarted') === 'true';
+
+const setAnalysisStarted = (element) => element.parentNode.setAttribute('analysisStarted', true);
+
 const createModalContentSection = (classification) => {
   const container = document.createElement('DIV');
   container.className = `modal-content-${classification}`;
@@ -113,7 +117,7 @@ const updateModalAndShow = (score, classification, claim) => {
   const [headerTitle] = header.getElementsByTagName('H2');
   headerTitle.textContent = `Claim: ${claim}`;
   const [headerSubTitle] = header.getElementsByTagName('P');
-  headerSubTitle.textContent = `${score}% of sources ${classification}`;
+  headerSubTitle.textContent = `${score}% of sources agree`;
 
   // Update sources that disagree
   const [disagreeContent] = modal.getElementsByClassName('modal-content-disagree');
@@ -174,7 +178,8 @@ const addAnalysisToElement = (element, score) => {
 const analyseClaims = (claims) => {
   for (let index = 0; index < claims.length; index += 1) {
     const claim = claims[index];
-    if (!hasBeenAnalysed(claim)) {
+    if (!hasAnalysisStarted(claim)) {
+      setAnalysisStarted(claim);
       const { textContent } = claim;
       analyseText(textContent, ({ score }) => {
         addAnalysisToElement(claim, score);
