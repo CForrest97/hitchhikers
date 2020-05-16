@@ -44,10 +44,10 @@ setInterval(() => {
   const tweets = getTweets();
   for (let index = 0; index < tweets.length; index += 1) {
     const tweet = tweets[index];
-    if (!hasBeenAnalysed(tweet)) {
+    const element = getTweetContentElement(tweet);
+    if (!hasBeenAnalysed(element)) {
       const text = getTweetText(tweet);
       analyseText(text, ({ score }) => {
-        const element = getTweetContentElement(tweet);
         addAnalysisToElement(element, score);
       });
     }

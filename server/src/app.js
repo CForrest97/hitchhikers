@@ -10,6 +10,7 @@ module.exports = () => {
   app.get('/', (req, res) => res.send('hello world'));
   app.post('/analyse', (req, res) => {
     const { origin } = req.body;
+    console.log(req.body);
 
     if (origin.includes('bbc')) {
       res.send({ score: 100 });
