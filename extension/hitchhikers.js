@@ -1,12 +1,22 @@
 const analyseText = (claim, callback) => {
-  const http = new XMLHttpRequest();
+  const xhr = new XMLHttpRequest();
   const url = 'http://localhost:4242/analyse';
 
-  http.open('POST', url, { body: true });
-  http.setRequestHeader('Content-Type', 'application/json');
-  http.send(JSON.stringify({ claim, origin: document.URL }));
-  http.onreadystatechange = () => {
-    const { response } = http;
+  xhr.open('POST', url, { body: true });
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify({ claim, origin: document.URL }));
+  xhr.onreadystatechange = () => {
+    // console.log('xhr.readyState', xhr.readyState);
+    if (xhr.readyState !== XMLHttpRequest.DONE) {
+      return;
+    }
+    const { status, response } = xhr;
+    // console.log('response');
+    // console.log(response);
+    if (!(status === 0 || (status >= 200 && status < 400))) {
+      console.log('Error: bad status:', status, response);
+      return;
+    }
     callback(JSON.parse(response));
   };
 };
@@ -109,7 +119,7 @@ const createModal = () => {
   return container;
 };
 
-const updateModalAndShow = (score, classification, claim) => {
+const updateModalAndShow = (pctAgree, classification, claim, searchResults) => {
   const modal = document.getElementById('hitchhiker-modal');
 
   // Update header
@@ -117,23 +127,44 @@ const updateModalAndShow = (score, classification, claim) => {
   const [headerTitle] = header.getElementsByTagName('H2');
   headerTitle.textContent = `Claim: ${claim}`;
   const [headerSubTitle] = header.getElementsByTagName('P');
-  headerSubTitle.textContent = `${score}% of sources agree`;
+  const score = pctAgree > 50 ? pctAgree : 100 - pctAgree;
+  headerSubTitle.textContent = `${score}% of sources ${classification}`;
 
   // Update sources that disagree
   const [disagreeContent] = modal.getElementsByClassName('modal-content-disagree');
   const [disagreeTitle] = disagreeContent.getElementsByClassName('modal-content-title');
-  disagreeTitle.textContent = '"No evidence" you can\'t get Covid-19 twice: WHO';
-  disagreeTitle.href = '';
-  const [disagreeAuthor] = disagreeContent.getElementsByClassName('modal-content-author');
-  disagreeAuthor.textContent = 'The Local';
+  console.log('searchResults', searchResults);
+  const {
+    for: [firstSourceFor],
+    against: [firstSourceAgainst],
+  } = searchResults;
+
+  if (firstSourceAgainst) {
+    const {
+      url,
+      name,
+      provider,
+    } = firstSourceAgainst;
+    disagreeTitle.textContent = name;
+    disagreeTitle.href = url;
+    const [disagreeAuthor] = disagreeContent.getElementsByClassName('modal-content-author');
+    disagreeAuthor.textContent = provider;
+  }
 
   // Update sources that agree
-  const [agreeContent] = modal.getElementsByClassName('modal-content-agree');
-  const [agreeTitle] = agreeContent.getElementsByClassName('modal-content-title');
-  agreeTitle.textContent = 'Coronavirus: Scientists conclude people cannot be infected twice';
-  agreeTitle.href = '';
-  const [agreeAuthor] = agreeContent.getElementsByClassName('modal-content-author');
-  agreeAuthor.textContent = 'Sky News';
+  if (firstSourceFor) {
+    const {
+      url,
+      name,
+      provider,
+    } = firstSourceFor;
+    const [agreeContent] = modal.getElementsByClassName('modal-content-agree');
+    const [agreeTitle] = agreeContent.getElementsByClassName('modal-content-title');
+    agreeTitle.textContent = name;
+    agreeTitle.href = url;
+    const [agreeAuthor] = agreeContent.getElementsByClassName('modal-content-author');
+    agreeAuthor.textContent = provider;
+  }
 
   // TODO update footer button with google link
 
@@ -141,48 +172,64 @@ const updateModalAndShow = (score, classification, claim) => {
   container.style.display = 'block';
 };
 
-const addAnalysisToElement = (element, score) => {
-  if ((!hasBeenAnalysed(element))) {
-    const classification = score > 80 ? 'agree' : 'disagree';
+const addAnalysisToElement = (element, analysis) => {
+  if (hasBeenAnalysed(element)) {
+    return;
+  }
+  setAnalysed(element);
+  const {
+    pctAgree,
+    searchResults,
+    searchQuery,
+    claim,
+  } = analysis;
+  const classification = pctAgree > 50 ? 'agree' : 'disagree';
+  // console.log('analysis');
+  // console.log(analysis);
+  const claimPreview = `${claim.split(' ').slice(0, 3).join(' ')}...`;
+  if (!searchResults || !(searchResults.for.length || searchResults.against.length)) {
+    console.log('[1] claim', claimPreview, 'no sources for or against');
+    return;
+  }
+  console.log('[1] claim', claimPreview);
 
-    // Only add the text if the element that should have text has a height (is not just a video)
-    if (element.offsetHeight > 0) {
-      const clickHere = document.createElement('SPAN');
-      clickHere.className = 'click-here';
-      clickHere.textContent = 'here';
-      clickHere.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevents sites like Twitter from opening the tweet
-        updateModalAndShow(score, classification, 'People are immune to coronavirus if they\'ve already had it');
-      }, false);
+  if (!element.offsetHeight) {
+    // element has no text (e.g. is a video)
+    return;
+  }
+  const clickHere = document.createElement('SPAN');
+  clickHere.className = 'click-here';
+  clickHere.textContent = 'Learn more';
+  clickHere.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevents sites like Twitter from opening the tweet
+    updateModalAndShow(pctAgree, classification, claimPreview, searchResults, searchQuery);
+  }, false);
 
-      const text = document.createElement('P');
-      text.className = `${classification}-text`;
-      text.appendChild(document.createTextNode(`Most sources ${classification}, Click `));
-      text.appendChild(clickHere);
-      text.appendChild(document.createTextNode(' to find out more'));
+  const text = document.createElement('P');
+  text.className = `${classification}-text`;
+  text.appendChild(document.createTextNode(`Most sources ${classification}. `));
+  text.appendChild(clickHere);
+  // text.appendChild(document.createTextNode(' to find out more'));
 
-      element.insertAdjacentElement('afterend', text);
-      element.classList.add(`${classification}-block`);
+  element.insertAdjacentElement('afterend', text);
+  element.classList.add(`${classification}-block`);
 
-      const modalExists = document.getElementById('hitchhiker-modal');
-      if (!modalExists) {
-        createModal();
-      }
-    }
+  console.log('[2] claim', claimPreview);
 
-    // Finally, show that the element has been analysed
-    setAnalysed(element);
+  const modalExists = document.getElementById('hitchhiker-modal');
+  if (!modalExists) {
+    createModal();
   }
 };
 
-const analyseClaims = (claims) => {
-  for (let index = 0; index < claims.length; index += 1) {
-    const claim = claims[index];
-    if (!hasAnalysisStarted(claim)) {
-      setAnalysisStarted(claim);
-      const { textContent } = claim;
-      analyseText(textContent, ({ pctAgree }) => {
-        addAnalysisToElement(claim, pctAgree);
+const analyseClaims = (claimElements, extractTextFromElement) => {
+  for (let index = 0; index < claimElements.length; index += 1) {
+    const element = claimElements[index];
+    if (!hasAnalysisStarted(element)) {
+      setAnalysisStarted(element);
+      const text = extractTextFromElement(element);
+      analyseText(text, (analysis) => {
+        addAnalysisToElement(element, analysis);
       });
     }
   }

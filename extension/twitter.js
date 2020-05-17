@@ -1,9 +1,5 @@
-// const getTweets = () => document.getElementsByTagName('article');
-// Temporarily only scan the first tweet
-const getTweets = () => {
-  const [firstTweet] = document.getElementsByTagName('article');
-  return [firstTweet];
-};
+const getTweets = () => document.getElementsByTagName('article');
+
 
 const getTweetContentElement = (tweet) => {
   // Get tweet content on single tweet status page
@@ -45,10 +41,11 @@ setInterval(() => {
   for (let index = 0; index < tweets.length; index += 1) {
     const tweet = tweets[index];
     const element = getTweetContentElement(tweet);
-    if (!hasBeenAnalysed(element)) {
+    if (!hasAnalysisStarted(element)) {
+      setAnalysisStarted(element);
       const text = getTweetText(tweet);
-      analyseText(text, ({ pctAgree }) => {
-        addAnalysisToElement(element, pctAgree);
+      analyseText(text, (analysis) => {
+        addAnalysisToElement(element, analysis);
       });
     }
   }

@@ -12,6 +12,7 @@ const search = (query) => request({
   qs: {
     q: query,
     mkt: 'en-US',
+    count: 5,
   },
   json: true,
 });
@@ -19,11 +20,15 @@ const search = (query) => request({
 const searchForUrls = async (query) => {
   // console.log('[searchForUrls] query');
   // console.log(query);
-  const results = await search(query);
+  const { value: results } = await search(query);
   // console.log('results');
   // console.log(results);
-  const urls = results.value.map(({ url }) => url);
-  return urls;
+  const summaries = results.map((result) => ({
+    url: result.url,
+    name: result.name,
+    provider: result.provider[0].name,
+  }));
+  return summaries;
 };
 
 module.exports = {

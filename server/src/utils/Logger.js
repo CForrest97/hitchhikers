@@ -11,7 +11,8 @@ const config = {
       type: 'stdout',
       layout: {
         type: 'pattern',
-        pattern: `%[[%d{dd/MM/yy hh:mm:ss} %X{${contextName}}] [%p]%] %m`,
+        pattern: `%[[%d{dd/MM/yy hh:mm:ss} %X{${contextName}}] %] %m`,
+        // pattern: `%[[%d{dd/MM/yy hh:mm:ss} %X{${contextName}}] [%p]%] %m`,
       },
     },
   },

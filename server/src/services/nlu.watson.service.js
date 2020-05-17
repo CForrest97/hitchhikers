@@ -54,46 +54,67 @@ const analyseUrl = async (url) => {
   return result.sentiment.document.label;
 };
 
-const analyse = async (text) => {
+const analyse = async (text, origin) => {
   const log = new Logger(`${path.basename(__filename)}] [${text.split(' ').slice(0, 3).join(' ')}...`);
-  const {
-    documentSentiment,
-    keywords,
-  } = await analyseText(text);
+  try {
+    const {
+      documentSentiment,
+      keywords,
+    } = await analyseText(text);
 
-  const searchQuery = keywords.join(' ');
-  const searchResults = await searchForUrls(searchQuery);
-  // console.log('searchResults', searchResults, searchResults.length);
+    const searchQuery = keywords.join(' ');
+    const searchResults = await searchForUrls(searchQuery);
 
-  let numAgreements = 0;
-  let numDisagreements = 0;
-  const promises = searchResults.map(async (url) => {
-    try {
-      const resultSentiment = await analyseUrl(url);
-      if (resultSentiment !== documentSentiment) {
-        numAgreements += 1;
-      } else if (!['positive', 'negative'].includes(resultSentiment)) {
-        log.warn(`resultSentiment (${resultSentiment}) was neither positive nor negative.    (url: ${url})`);
-      } else {
-        numDisagreements += 1;
+    const sourcesFor = [];
+    const sourcesAgainst = [];
+    const promises = searchResults.map(async (result) => {
+      const { url } = result;
+      if (url === origin) {
+        // ignore result if it is the original claim
+        return;
       }
-    } catch (err) {
-      log.error(`[${JSON.parse(err.body).code}] ${err.message}.    (url: ${url})`);
+      try {
+        const resultSentiment = await analyseUrl(url);
+        if (resultSentiment !== documentSentiment) {
+          sourcesFor.push(result);
+        } else if (!['positive', 'negative'].includes(resultSentiment)) {
+          log.warn(`resultSentiment (${resultSentiment}) was neither positive nor negative.    (url: ${url})`);
+        } else {
+          sourcesAgainst.push(result);
+        }
+      } catch (error) {
+        log.warn(`[${JSON.parse(error.body).code}] ${error.message}.    (url: ${url})`);
+      }
+    });
+    await Promise.all(promises);
+
+    // console.log('sourcesFor', sourcesFor);
+    const numResults = sourcesFor.length + sourcesAgainst.length;
+    if (!numResults) {
+      log.warn(`numResults: ${numResults}`);
     }
-  });
-  await Promise.all(promises);
 
-  // console.log('numAgreements', numAgreements);
-  const numResults = numAgreements + numDisagreements;
-  const pctAgree = numAgreements / numResults;
+    const pctAgree = sourcesFor.length / numResults;
 
-  return {
-    pctAgree: pctAgree * 100,
-    searchResults,
-    searchQuery,
-  };
+    return {
+      pctAgree: pctAgree * 100,
+      searchResults: {
+        for: sourcesFor,
+        against: sourcesAgainst,
+      },
+      searchQuery,
+      claim: text,
+    };
+  } catch (error) {
+    log.error(`[${JSON.parse(error.body).code}] ${error.message}`);
+    return {
+      pctAgree: -1,
+      claim: text,
+    };
+  }
 };
 
 module.exports = {
   analyse,
+  analyseUrl,
 };
