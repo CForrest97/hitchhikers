@@ -1,6 +1,8 @@
-const getClaims = () => document.getElementsByClassName('story-body__h1');
+const getClaimElements = () => document.getElementsByClassName('story-body__h1');
+
+const extractTextFromElement = (element) => element.textContent;
 
 setInterval(() => {
-  const claims = getClaims();
-  analyseClaims(claims);
+  const elements = getClaimElements();
+  analyseClaims(elements, extractTextFromElement);
 }, 500);

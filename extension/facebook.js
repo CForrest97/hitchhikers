@@ -1,6 +1,8 @@
-const getClaims = () => document.querySelectorAll('[data-testid="post_message"]');
+const getClaimElements = () => document.querySelectorAll('[data-testid="post_message"]');
+
+const extractTextFromElement = (element) => element.textContent;
 
 setInterval(() => {
-  const claims = getClaims();
-  analyseClaims(claims);
+  const elements = getClaimElements();
+  analyseClaims(elements, extractTextFromElement);
 }, 500);

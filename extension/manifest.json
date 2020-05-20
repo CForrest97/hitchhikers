@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
 
-  "name": "Hitchhikers Guide to the Internet",
+  "name": "Hitchhiker's Guide to the Internet",
   "version": "0.1.0",
-  "description": "Lateral blog post demo extension",
+  "description": "Helping you spot health misinformation on websites",
 
   "content_scripts": [
     {
