@@ -94,10 +94,10 @@ const analyse = async (text, origin) => {
       log.warn(`numResults: ${numResults}`);
     }
 
-    const pctAgree = sourcesFor.length / numResults;
+    const pctAgree = (Math.round((sourcesFor.length / numResults) * 100)).toFixed(2);
 
     return {
-      pctAgree: pctAgree * 100,
+      pctAgree,
       searchResults: {
         for: sourcesFor,
         against: sourcesAgainst,

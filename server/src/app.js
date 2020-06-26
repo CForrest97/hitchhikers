@@ -1,22 +1,25 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const path = require('path');
 
-const Logger = require('./utils/Logger');
-const errorHandler = require('./middleware/errorHandler');
+const { addAnalysedQuotesToReq } = require('./middleware/analysedQuotes');
+const { handleErrors } = require('./middleware/errorHandler');
+
+const serveClient = require('./routes/serveClient.route');
 const analyseRoute = require('./routes/analyse.route');
+const moreInfoRoute = require('./routes/moreInfo.route');
 
 module.exports = () => {
-  const log = new Logger(__filename);
   const app = express();
   app.use(cors());
   app.use(bodyParser.json());
-  // log.logAllApiCalls(app); // call after `app.use(bodyParser)` and before `app.use(router)`
-
-  app.get('/', (req, res) => res.send('hello world'));
+  app.use(addAnalysedQuotesToReq);
+  app.use(express.static(path.join(__dirname, 'client')));
 
   app.use(analyseRoute);
-
-  app.use(errorHandler.handleErrors);
+  app.use(moreInfoRoute);
+  app.use(handleErrors);
+  app.use(serveClient);
   return app;
 };

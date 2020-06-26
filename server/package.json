@@ -18,7 +18,8 @@
     "ibm-watson": "^5.5.0",
     "log4js": "^6.2.1",
     "request": "^2.88.2",
-    "request-promise": "^4.2.5"
+    "request-promise": "^4.2.5",
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
     "jest": "^26.0.1",

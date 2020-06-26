@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install:all": "npm i && cd server && npm install",
+    "install:all": "npm install && npm run install:server && npm run install:client",
+    "install:server": "cd server && npm install",
+    "install:client": "cd client && npm install",
+    "build:all": "cd client && npm run build && mv ./build ../server/src/client",
     "start": "cd server && npm start"
   },
   "author": "",

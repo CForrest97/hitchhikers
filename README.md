@@ -1,19 +1,12 @@
-
-
-
-
 <h1 align="center">Welcome to Hitchhikers 👋</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
   <a href="#" target="_blank">
-    <img alt="License: ISC" src="https://img.shields.io/badge/License-ISC-yellow.svg" />
+    <img alt="License: ISC" src="https://img.shields.io/badge/License-Apache2-yellow.svg" />
   </a>
 </p>
 
-> Helping people spot health misinformation on the internet, using Watson Natural Language Understanding
-
-TODO: Check license
-[![License](https://img.shields.io/badge/License-Apache2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+> Helping people spot misinformation on the internet, using Watson Natural Language Understanding
 
 ## Contents
 
@@ -24,10 +17,7 @@ TODO: Check license
 1. [Project roadmap](#project-roadmap)
 1. [Getting started](#getting-started)
 1. [Running the tests](#running-the-tests)
-1. [Live demo](#live-demo)
 1. [Built with](#built-with)
-1. [Contributing](#contributing)
-1. [Versioning](#versioning)
 1. [Authors](#authors)
 1. [License](#license)
 1. [Acknowledgments](#acknowledgments)
@@ -51,15 +41,15 @@ TODO: Make and deliver video
 [![Watch the video](https://github.com/Code-and-Response/Liquid-Prep/blob/master/images/IBM-interview-video-image.png)](https://youtu.be/vOgCOoy_Bx0)
 
 ## The architecture
+![Architecture diagram](./images/architectureDiagram.png)
 
-TODO: Architecture diagram
-![Video transcription/translation app](https://developer.ibm.com/developer/tutorials/cfc-starter-kit-speech-to-text-app-example/images/cfc-covid19-remote-education-diagram-2.png)
-
+TODO: Change this text
+```
 1. The user navigates to the site and uploads a video file.
 2. Watson Speech to Text processes the audio and extracts the text.
 3. Watson Translation (optionally) can translate the text to the desired language.
 4. The app stores the translated text as a document within Object Storage.
-
+```
 ## Long description
 TODO: Write long description
 [More detail is available here](DESCRIPTION.md)
@@ -73,20 +63,35 @@ TODO: Make roadmap
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
-TODO: Add true prereqs (Google Chrome for extension, Nodejs etc)
 
-What things you need to install the software and how to install them
-
-```bash
-dnf install wget
-wget http://www.example.com/install.sh
-bash install.sh
+* Google Chrome to run the extension
+* Node.js
+* An API Key and URL for IBM Watson Natural Language
+```sh
+# export these into your terminal before you run it
+export NATURAL_LANGUAGE_UNDERSTANDING_IAM_APIKEY="";
+export NATURAL_LANGUAGE_UNDERSTANDING_URL="";
+# See more here: https://www.npmjs.com/package/@ibm-watson/natural-language-understanding-nodejs#prerequisites
 ```
 
-### Install
+
+* An API Key for Microsoft Bing Search API
+```sh
+# export these into your terminal before you run it
+export BING_SEARCH_APIKEY="";
+# See more here: https://azure.microsoft.com/en-us/services/cognitive-services/bing-news-search-api/
+```
+
+### Install and build
 
 ```sh
+# From top level directory
+
+# Install dependencies
 npm run install:all
+
+# Build client
+npm run build:all
 ```
 
 ### Usage
@@ -95,6 +100,7 @@ npm run install:all
 #### Server
 
 ```sh
+# From top level directory
 npm start
 ```
 
@@ -107,62 +113,30 @@ Press: Load Unpacked
 Click: extension folder
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+Once the server is running and you've loaded the Chrome Extension, go to your Twitter timeline and watch as the Tweets are analysed.
 
-## Running the tests
+From there you can easily see the different view points by clicking on the "click here for more information" button that is highlighted.
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why, if you were using something like `mocha` for instance
+## Running the server tests
+*Note: you need the API keys as described in the prerequisites*
 
 ```bash
-npm install mocha --save-dev
-vi test/test.js
-./node_modules/mocha/bin/mocha
+cd server && npm install && npm run apitest
 ```
-
-### And coding style tests
-
-Explain what these tests test and why, if you chose `eslint` for example
-
-```bash
-npm install eslint --save-dev
-npx eslint --init
-npx eslint sample-file.js
-```
-
-## Live demo
-TODO: Guessing we're not going to have a live demo
-`You can find a running system to test at [callforcode.mybluemix.net](http://callforcode.mybluemix.net/)`
 
 ## Built with
 
-TODO: Add what we're really built with
-```
-* [IBM Cloudant](https://cloud.ibm.com/catalog?search=cloudant#search_results) - The NoSQL database used
-* [IBM Cloud Functions](https://cloud.ibm.com/catalog?search=cloud%20functions#search_results) - The compute platform for handing logic
-* [IBM API Connect](https://cloud.ibm.com/catalog?search=api%20connect#search_results) - The web framework used
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-```
-
-## Contributing
-TODO: Do we want a contributing.md
-`Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.`
-
-## Versioning
-TODO: Do we version
-`We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).`
+* [IBM Watson Natural Language](https://www.ibm.com/uk-en/cloud/watson-natural-language-understanding) - Used to extract the "claim" from a social media post
+* [Microsoft Bing Search API](https://azure.microsoft.com/en-us/services/cognitive-services/bing-news-search-api/) - Used to get articles about a topic
+* [Express.js](https://expressjs.com/) - Powers the Node.js server
+* [React.js](https://reactjs.org/) - Handles the front end (Home and more info pages)
 
 ## Authors
-TODO: Add Camerons Github
+
 * **Craig Forrest** - *Initial work, recently left IBM* - https://github.com/CForrest97
 * **Richard Waller** - https://github.com/rwalle61
 * **Matt Emerson** - https://github.com/mattemerson1
-* **Cameron Roberts Forrest** - [https://github.com/PurpleBooth
+* **Cameron Roberts** - https://github.com/cameronldroberts
 * **James Wallis** - https://github.com/james-wallis
 
 See also the list of [contributors](https://github.com/james-wallis/hitchhikers/graphs/contributors) who participated in this project.

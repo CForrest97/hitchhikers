@@ -7,13 +7,23 @@ const NLUService = require('../services/nlu.watson.service');
 const router = express.Router();
 
 const analyse = async (req, res) => {
+  const { analysedQuotes } = req;
   const { claim, origin } = req.body;
   const log = new Logger(`${path.basename(__filename)}] [${claim.split(' ').slice(0, 3).join(' ')}...`);
 
   log.debug('received claim');
+  const cachedResultID = analysedQuotes.findIDFromTitle(claim);
+  if (cachedResultID) {
+    const cachedResult = analysedQuotes.get(cachedResultID);
+    log.debug('Using cache');
+    log.info(cachedResult.pctAgree);
+    return res.send({ ...cachedResult, claimID: cachedResultID });
+  }
+
   const result = await NLUService.analyse(claim, origin);
   log.info(result.pctAgree);
-  return res.send(result);
+  const claimID = analysedQuotes.add(result);
+  return res.send({ ...result, claimID });
 };
 
 router.post('/analyse', analyse);

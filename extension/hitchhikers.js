@@ -1,8 +1,13 @@
+const serverURL = 'http://localhost:4242';
+const analyseURL = `${serverURL}/analyse`;
+const moreInfoBaseURL = `${serverURL}/find-out-more`;
+const hitchhikerInfoURL = `${serverURL}/`; // host using built files 'http://localhost:4288/';
+const bingSearchBaseURL = 'https://www.bing.com/search?q=';
+
 const analyseText = (claim, callback) => {
   const xhr = new XMLHttpRequest();
-  const url = 'http://localhost:4242/analyse';
 
-  xhr.open('POST', url, { body: true });
+  xhr.open('POST', analyseURL, { body: true });
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify({ claim, origin: document.URL }));
   xhr.onreadystatechange = () => {
@@ -44,9 +49,10 @@ const createModalContentSection = (classification) => {
   author.className = 'modal-content-author';
 
   // TODO make a link or button and do something to show more
-  const showMore = document.createElement('P');
+  const showMore = document.createElement('A');
   showMore.className = 'modal-show-more';
   showMore.textContent = 'Show more';
+  showMore.target = '_blank';
 
   container.appendChild(title);
   container.appendChild(link);
@@ -89,17 +95,19 @@ const createModal = () => {
 
   // view info button
   const hitchhikerInfo = document.createElement('A');
-  hitchhikerInfo.href = 'http://localhost:4288/';
+  hitchhikerInfo.href = hitchhikerInfoURL;
   hitchhikerInfo.target = '_blank';
   hitchhikerInfo.textContent = 'How does this work?';
   const hitchhikerInfoContainer = document.createElement('DIV');
   hitchhikerInfoContainer.appendChild(hitchhikerInfo);
   footer.appendChild(hitchhikerInfoContainer);
 
-  // TODO improve by adding a href element and link to Google search
+  // TODO improve by adding a href element and link to Bing search
   const searchClaimOnGoogle = document.createElement('BUTTON');
-  searchClaimOnGoogle.textContent = 'Search this claim on Google';
-  const searchClaimOnGoogleContainer = document.createElement('DIV');
+  searchClaimOnGoogle.textContent = 'Search this claim on Bing';
+  const searchClaimOnGoogleContainer = document.createElement('A');
+  searchClaimOnGoogleContainer.className = 'search-button';
+  searchClaimOnGoogleContainer.target = '_blank';
   searchClaimOnGoogleContainer.appendChild(searchClaimOnGoogle);
   footer.appendChild(searchClaimOnGoogleContainer);
 
@@ -119,7 +127,10 @@ const createModal = () => {
   return container;
 };
 
-const updateModalAndShow = (pctAgree, classification, claim, searchResults) => {
+const updateModalAndShow = (
+  pctAgree, classification, claim,
+  searchResults, searchQuery, claimID,
+) => {
   const modal = document.getElementById('hitchhiker-modal');
 
   // Update header
@@ -130,8 +141,13 @@ const updateModalAndShow = (pctAgree, classification, claim, searchResults) => {
   const score = pctAgree > 50 ? pctAgree : 100 - pctAgree;
   headerSubTitle.textContent = `${score}% of sources ${classification}`;
 
+  // update search button
+  const [searchButton] = modal.getElementsByClassName('search-button');
+  searchButton.href = `${bingSearchBaseURL}${searchQuery}`;
+
   // Update sources that disagree
   const [disagreeContent] = modal.getElementsByClassName('modal-content-disagree');
+  const [moreInfoDisagreeLink] = disagreeContent.getElementsByClassName('modal-show-more');
   const [disagreeTitle] = disagreeContent.getElementsByClassName('modal-content-title');
   console.log('searchResults', searchResults);
   const {
@@ -149,6 +165,7 @@ const updateModalAndShow = (pctAgree, classification, claim, searchResults) => {
     disagreeTitle.href = url;
     const [disagreeAuthor] = disagreeContent.getElementsByClassName('modal-content-author');
     disagreeAuthor.textContent = provider;
+    moreInfoDisagreeLink.href = `${moreInfoBaseURL}/${claimID}`;
   }
 
   // Update sources that agree
@@ -164,6 +181,8 @@ const updateModalAndShow = (pctAgree, classification, claim, searchResults) => {
     agreeTitle.href = url;
     const [agreeAuthor] = agreeContent.getElementsByClassName('modal-content-author');
     agreeAuthor.textContent = provider;
+    const [moreInfoAgreeLink] = agreeContent.getElementsByClassName('modal-show-more');
+    moreInfoAgreeLink.href = `${moreInfoBaseURL}/${claimID}`;
   }
 
   // TODO update footer button with google link
@@ -173,6 +192,7 @@ const updateModalAndShow = (pctAgree, classification, claim, searchResults) => {
 };
 
 const addAnalysisToElement = (element, analysis) => {
+  console.log("analysis", analysis);
   if (hasBeenAnalysed(element)) {
     return;
   }
@@ -182,6 +202,7 @@ const addAnalysisToElement = (element, analysis) => {
     searchResults,
     searchQuery,
     claim,
+    claimID,
   } = analysis;
   const classification = pctAgree > 50 ? 'agree' : 'disagree';
   // console.log('analysis');
@@ -202,7 +223,7 @@ const addAnalysisToElement = (element, analysis) => {
   clickHere.textContent = 'Learn more';
   clickHere.addEventListener('click', (e) => {
     e.stopPropagation(); // Prevents sites like Twitter from opening the tweet
-    updateModalAndShow(pctAgree, classification, claimPreview, searchResults, searchQuery);
+    updateModalAndShow(pctAgree, classification, claimPreview, searchResults, searchQuery, claimID);
   }, false);
 
   const text = document.createElement('P');

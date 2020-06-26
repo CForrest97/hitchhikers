@@ -11,3 +11,52 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.Content.more-info>h1 {
+  font-weight: 300;
+  font-size: 24px;
+}
+
+.Content.more-info p {
+  font-size: 16px;
+}
+
+.Content.more-info p.search-query {
+  margin: 0;
+}
+
+.Content.more-info a.search-query {
+  font-size: 12px;
+  margin: 5px 0 0;
+  display: block;
+}
+
+.Content.more-info h2 {
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 20px;
+}
+
+.Content.more-info .results {
+  font-size: 16px;
+  margin: 20px 0;
+  display: block;
+}
+
+.Content.more-info .results .name {
+  font-size: 16px;
+  margin: 5px 0 0;
+  display: block;
+}
+
+.Content.more-info .results .provider {
+  font-size: 12px;
+  margin: 5px 0 0;
+  display: block;
+}
+
+.Content.more-info .results a {
+  font-size: 12px;
+  margin: 5px 0 0;
+  display: block;
+}
