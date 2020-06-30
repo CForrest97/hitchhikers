@@ -10,10 +10,9 @@
 
 ## Contents
 
-1. [Short description](#short-description)
+1. [Description](#description)
 1. [Demo video](#demo-video)
 1. [The architecture](#the-architecture)
-1. [Long description](#long-description)
 1. [Project roadmap](#project-roadmap)
 1. [Getting started](#getting-started)
 1. [Running the tests](#running-the-tests)
@@ -22,37 +21,60 @@
 1. [License](#license)
 1. [Acknowledgments](#acknowledgments)
 
-## Short description
-TODO: Add short description
-```markdown
+## Description
+
 ### What's the problem?
 
-Part of the World Health Organization's guidance on limiting further spread of COVID-19 is to practice social distancing. As a result, schools in most affected areas are taking precautionary measures by closing their facilities. With school-aged children at home for an indeterminate amount of time,  keeping them engaged, entertained, and on top of their education is important.
+Anyone that uses social media will have come into contact with misinformation or fake news. While some people are able to recognise it as fake news, many can not and will heed the advice or worse, help spread it like wild fire.
 
-### How can technology help?
-TODO: Add idea
-Schools and teachers can continue to engage with their students through virtual classrooms, and even create interactive spaces for classes. As parents face a new situation where they may need to homeschool their children, finding appropriate online resources is important as well.
+In the recent COVID-19 pandemic, misinformation and fake news have led to fatal outcomes on numerous occasions. 
 
-### The idea
-It's imperative that learning and creating can continue when educational institutions have to shift the way they teach in times of crises, such as the COVID-19 pandemic. Providing a set of open source tools, backed by IBM Cloud and Watson Services, will enable educators to more easily make content available for their students.
-```
+While social media companies like Facebook and Twitter have made recent efforts to remove or flag misinformation on their sites, they are struggling to keep up with the ever increasing workload.
+
+In 2019, fact checking companies such as snopes.com quit working with Facebook, due to an unmanageable workload [7]. In March and April 2020, Facebook placed warning labels on 90 million pieces of content related to COVID-19 alone [1].
+
+In order to cope, fact checking responsibilities are being farmed out to third party companies, who mostly employ temporary workers on precarious contracts. As a result removal of misinformation is often missed or left up on the platform in error [6].
+
+Facebook themselves admitted a 10% error rate, equating to 300,000 daily posts left up [6]. 
+
+We are left to question, is enough being done?
+
+[1] https://www.bbc.co.uk/news/technology-52903680
+
+[2] https://www.independent.co.uk/news/world/middle-east/coronavirus-iran-deaths-toxic-methanol-alcohol-fake-news-rumours-a9487801.html
+
+[3] https://twitter.com/realDonaldTrump/status/1241367239900778501?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1241367239900778501&ref_url=https%3A%2F%2Fwww.bbc.co.
+uk%2Fnews%2Fstories-52731624
+
+[4] https://www.bbc.co.uk/news/stories-52731624
+
+[5] https://www.independent.co.uk/news/uk/home-news/fake-news-facebook-twitter-share-misinformation-survey-a8908361.html
+
+[6] https://www.technologyreview.com/2020/06/08/1002894/facebook-needs-30000-of-its-own-content-moderators-says-a-new-report/
+
+[7] https://www.telegraph.co.uk/technology/2019/02/02/snopes-quits-facebooks-fact-checking-programme-saying-has-become/
+
+
+### Solution
+We wanted to provide a way for the user to get instant feedback regarding information in a post or article they are reading, and we wanted to do this in a way that was seamless to their experience. We came up with the idea of using a Chrome extension to highlight a webpage as the user is reading it so that they instantly know whether they should trust or research the message further.
+
+Our process is as follows:
+1. When a user is browsing social media, The Hitchhiker's Guide uses IBM Watson's Natural Language processing and sentiment analysis to extract the central "Claim" from the post.
+1. Next we convert the "Claim" into a searchable query and then use the Microsoft Bing search API to find articles with a range of opinions on the topic.
+1. Then IBM Watson is again utilised to decide whether the articles returned from the Bing search agree or disagree with the "Claim" and provides a percentage summary to indicate the general consensus.
+1. Once the data is received by the Chrome extension the social media post is highlighted to give the user instant feedback. 
+
+The Hitchhiker's Guide helps fact-checkers by removing a lot of the menial tasks such as conducting the search and finding the articles. It also provides a snapshot of the current public opinion on the given statement.
+
+Additionally, our solution can be used for more than helping to identify and review misinformation 
+regarding COVID-19, it can be used in all other opinion rich areas such as climate change and politics. 
+
+
 ## Demo video
-TODO: Make and deliver video
-[![Watch the video](https://github.com/Code-and-Response/Liquid-Prep/blob/master/images/IBM-interview-video-image.png)](https://youtu.be/vOgCOoy_Bx0)
+[Watch the Video](https://youtu.be/CKrPHHcnX9c)
 
 ## The architecture
 ![Architecture diagram](./images/architectureDiagram.png)
-
-TODO: Change this text
-```
-1. The user navigates to the site and uploads a video file.
-2. Watson Speech to Text processes the audio and extracts the text.
-3. Watson Translation (optionally) can translate the text to the desired language.
-4. The app stores the translated text as a document within Object Storage.
-```
-## Long description
-TODO: Write long description
-[More detail is available here](DESCRIPTION.md)
 
 ## Project roadmap
 TODO: Make roadmap

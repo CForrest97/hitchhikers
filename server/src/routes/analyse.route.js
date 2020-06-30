@@ -22,7 +22,11 @@ const analyse = async (req, res) => {
 
   const result = await NLUService.analyse(claim, origin);
   log.info(result.pctAgree);
-  const claimID = analysedQuotes.add(result);
+  let claimID = '-1';
+  // Guard against caching failed claims
+  if (result.pctAgree >= 0) {
+    claimID = analysedQuotes.add(result);
+  }
   return res.send({ ...result, claimID });
 };
 

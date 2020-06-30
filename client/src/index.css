@@ -19,6 +19,7 @@ code {
 
 .Content.more-info p {
   font-size: 16px;
+  margin-bottom: 30px;
 }
 
 .Content.more-info p.search-query {
@@ -32,9 +33,9 @@ code {
 }
 
 .Content.more-info h2 {
-  font-size: 20px;
-  font-weight: 400;
-  margin-top: 20px;
+  font-size: 25px;
+  font-weight: 500;
+  margin-top: 40px;
 }
 
 .Content.more-info .results {

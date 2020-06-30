@@ -166,6 +166,12 @@ const updateModalAndShow = (
     const [disagreeAuthor] = disagreeContent.getElementsByClassName('modal-content-author');
     disagreeAuthor.textContent = provider;
     moreInfoDisagreeLink.href = `${moreInfoBaseURL}/${claimID}`;
+  } else {
+    disagreeTitle.textContent = 'No sources disagree';
+    disagreeTitle.href = '';
+    const [disagreeAuthor] = disagreeContent.getElementsByClassName('modal-content-author');
+    disagreeAuthor.textContent = '';
+    moreInfoDisagreeLink.href = '';
   }
 
   // Update sources that agree
@@ -183,9 +189,16 @@ const updateModalAndShow = (
     agreeAuthor.textContent = provider;
     const [moreInfoAgreeLink] = agreeContent.getElementsByClassName('modal-show-more');
     moreInfoAgreeLink.href = `${moreInfoBaseURL}/${claimID}`;
+  } else {
+    const [agreeContent] = modal.getElementsByClassName('modal-content-agree');
+    const [agreeTitle] = agreeContent.getElementsByClassName('modal-content-title');
+    agreeTitle.textContent = 'No sources agree';
+    agreeTitle.href = '';
+    const [agreeAuthor] = agreeContent.getElementsByClassName('modal-content-author');
+    agreeAuthor.textContent = '';
+    const [moreInfoAgreeLink] = agreeContent.getElementsByClassName('modal-show-more');
+    moreInfoAgreeLink.href = '';
   }
-
-  // TODO update footer button with google link
 
   const container = modal.parentNode;
   container.style.display = 'block';

@@ -6,7 +6,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "start": "node src/index.js",
-    "start:dev": "nodemon src/index.js"
+    "start:dev": "nodemon --inspect src/index.js"
   },
   "author": "",
   "license": "ISC",

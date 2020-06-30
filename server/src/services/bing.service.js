@@ -2,7 +2,7 @@ const request = require('request-promise');
 
 const subscriptionKey = process.env.BING_SEARCH_APIKEY;
 const endpoint = 'https://api.cognitive.microsoft.com/bing/v7.0/news/search';
-const totalNumberOfArticles = 10;
+const totalNumberOfArticles = 6;
 
 const search = (query) => request({
   method: 'GET',

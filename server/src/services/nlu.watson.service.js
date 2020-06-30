@@ -106,7 +106,11 @@ const analyse = async (text, origin) => {
       claim: text,
     };
   } catch (error) {
-    log.error(`[${JSON.parse(error.body).code}] ${error.message}`);
+    if (error.statusCode && error.message) {
+      log.error(`[Status Code: ${error.statusCode}] ${error.message}`);
+    } else {
+      log.error(error);
+    }
     return {
       pctAgree: -1,
       claim: text,
